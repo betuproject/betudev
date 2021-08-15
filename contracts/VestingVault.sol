@@ -1,7 +1,9 @@
-pragma solidity  >=0.4.22 <0.9.0;
+// SPDX-License-Identifier: MIT
 
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.0.0/contracts/token/ERC20/ERC20.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.0.0/contracts/math/SafeMath.sol";
+pragma solidity  ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 
 contract VestingVault {
@@ -14,7 +16,11 @@ contract VestingVault {
     }
 
     modifier onlyValidAddress(address _recipient) {
-        require(_recipient != address(0) && _recipient != address(this) && _recipient != address(token), "not valid _recipient");
+        require(
+            _recipient != address(0) &&
+            _recipient != address(this) &&
+            _recipient != address(token),
+            "not valid _recipient");
         _;
     }
 
@@ -42,7 +48,7 @@ contract VestingVault {
     address public v12MultiSig;
     uint256 public totalVestingCount;
 
-    constructor(ERC20 _token) public {
+    constructor(ERC20 _token) {
         require(address(_token) != address(0));
         v12MultiSig = msg.sender;
         token = _token;
@@ -83,7 +89,7 @@ contract VestingVault {
         totalVestingCount++;
     }
 
-    function getActiveGrants(address _recipient) public view returns(uint256[]){
+    function getActiveGrants(address _recipient) external view returns(uint256[] memory){
         return activeGrants[_recipient];
     }
 
@@ -168,7 +174,7 @@ contract VestingVault {
         return block.timestamp;
     }
 
-    function tokensVestedPerDay(uint256 _grantId) public view returns(uint256) {
+    function tokensVestedPerDay(uint256 _grantId) external view returns(uint256) {
         Grant storage tokenGrant = tokenGrants[_grantId];
         return tokenGrant.amount.div(uint256(tokenGrant.vestingDuration));
     }
