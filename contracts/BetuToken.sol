@@ -15,7 +15,7 @@ contract BetuToken is Context, AccessControl, Ownable, ERC20, ERC20Pausable, ERC
 
     string public tokenName = "BETU";
     string public tokenSymbol = "BETU";
-    uint256 public initialSupply = 1000000000 * 10e18;
+    uint256 public initialSupply = 1e9 ether;
     
     constructor() ERC20(tokenName, tokenSymbol) {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
